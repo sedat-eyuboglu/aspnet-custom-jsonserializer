@@ -9,6 +9,6 @@ public class WeatherForecast
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     
     [LocalizedProperty(KeyPrefix = "WeatherForecast_Summary")]
-    [SecureProperty("customer", default(int))]
+    [SecureProperty("customer", default(string))]
     public string? Summary { get; set; }
 }

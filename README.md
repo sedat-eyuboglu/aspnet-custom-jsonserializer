@@ -18,3 +18,16 @@ builder.Services.AddOptions<Microsoft.AspNetCore.Mvc.JsonOptions>().Configure<Ap
     };
 });
 ```
+
+# Run Demo
+1. Press `F5`.
+2. Call `GetWeatherForecast`.
+3. Check `Summary` field. Since you have not logged in yet and declare the property as secure, expect to see `null`.
+4. Call `Login`.
+5. Call `GetWeatherForecast`.
+6. Check `Summary` field. Expect to see localized value instead set inside the action.
+7. Call `GetMyCustomEntity`.
+8. Check `Value` field. Since you have logged in as `customer`, expect to see `0`.
+9. Call `LoginAsAdmin`.
+10. Call `GetMyCustomEntity`.
+11. Check `Value` field. Expect to see a random integer value.

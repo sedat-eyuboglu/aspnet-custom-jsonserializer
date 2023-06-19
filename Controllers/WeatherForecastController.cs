@@ -33,11 +33,31 @@ public class WeatherForecastController : ControllerBase
         .ToArray();
     }
 
+    [HttpGet("GetMyCustomEntity")]
+    public MyCustomEntity GetMyCustomEntity()
+    {
+        return new()
+        {
+            Name = "MyName",
+            Value = Random.Shared.Next(1, 1000)
+        };
+    }
+
     [HttpGet("Login")]
     public async Task Login()
     {
         var claimsIdentity = new ClaimsIdentity(new List<Claim>(){
             new (ClaimTypes.Role, "customer")
+        }, CookieAuthenticationDefaults.AuthenticationScheme);
+        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+        await HttpContext.SignInAsync(claimsPrincipal);
+    }
+
+    [HttpGet("LoginAsAdmin")]
+    public async Task LoginAsAdmin()
+    {
+        var claimsIdentity = new ClaimsIdentity(new List<Claim>(){
+            new (ClaimTypes.Role, "admin")
         }, CookieAuthenticationDefaults.AuthenticationScheme);
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
         await HttpContext.SignInAsync(claimsPrincipal);
