@@ -4,12 +4,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddAuthentication(options =>
-{
-    
-
-});
-
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<MyLocalizer>();
 builder.Services.AddSingleton<LocalizedEntityDataContract>();
