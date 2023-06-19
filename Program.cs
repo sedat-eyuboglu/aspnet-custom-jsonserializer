@@ -4,6 +4,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddAuthentication(options =>
+{
+    
+
+});
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<MyLocalizer>();
 builder.Services.AddSingleton<LocalizedEntityDataContract>();
@@ -20,6 +26,7 @@ builder.Services.AddOptions<Microsoft.AspNetCore.Mvc.JsonOptions>().Configure<Lo
 });
 
 var app = builder.Build();
+app.UseAuthentication();
 
 app.MapControllers();
 app.Run();
