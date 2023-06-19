@@ -18,8 +18,7 @@ public class LocalizedEntityDataContract
         {
             foreach(var propertyInfo in typeInfo.Properties)
             {
-                var localizablePropertyAttributes = propertyInfo.AttributeProvider?.GetCustomAttributes(typeof(LocalizablePropertyAttribute), true) ?? Array.Empty<object>();
-                var localizablePropertyAttribute = localizablePropertyAttributes.Length == 1 ? (LocalizablePropertyAttribute)localizablePropertyAttributes[0] : null;
+                var localizablePropertyAttribute = FindAttribute<LocalizablePropertyAttribute>(propertyInfo);
                 if(localizablePropertyAttribute is not null)
                 {
                     var getProperty = propertyInfo.Get;
@@ -34,6 +33,32 @@ public class LocalizedEntityDataContract
                                 var localizationKey = string.Concat(localizablePropertyAttribute.KeyPrefix, LOCALIZATION_KEY_SEP, noneLocalizedValue);
                                 var result = localizer.GetString(localizationKey, contentCulture);
                                 return result;
+                            };
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void ApplyColumnSecurity(JsonTypeInfo typeInfo)
+    {
+        if(localizer is not null && typeInfo.Kind == JsonTypeInfoKind.Object)
+        {
+            foreach(var propertyInfo in typeInfo.Properties)
+            {
+                var securePropertyAttribute = FindAttribute<SecurePropertyAttribute>(propertyInfo);
+                if(securePropertyAttribute is not null)
+                {
+                    var getProperty = propertyInfo.Get;
+                    if(getProperty is not null)
+                    {
+                        var isInRole = IsInRole(securePropertyAttribute.Roles);
+                        if(isInRole == false)
+                        {
+                            propertyInfo.Get = (obj) => 
+                            {
+                                return string.Empty;
                             };
                         }
                     }
@@ -57,5 +82,22 @@ public class LocalizedEntityDataContract
             }
         }
         return string.Empty;
+    }
+
+    private bool IsInRole(string roles)
+    {
+        if(roles.Length > 0 && httpContextAccessor?.HttpContext is not null)
+        {
+            var user = httpContextAccessor.HttpContext.User;
+            return roles.Split(' ').Any(e => user.IsInRole(e));
+        }
+        return false;
+    }
+
+    private T? FindAttribute<T>(JsonPropertyInfo propertyInfo) where T:class
+    {
+        var propertyAttributes = propertyInfo.AttributeProvider?.GetCustomAttributes(typeof(T), true) ?? Array.Empty<object>();
+        var propertyAttribute = propertyAttributes.Length == 1 ? (T)propertyAttributes[0] : null;
+        return propertyAttribute;
     }
 }

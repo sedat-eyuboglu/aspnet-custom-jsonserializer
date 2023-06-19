@@ -13,7 +13,8 @@ builder.Services.AddOptions<Microsoft.AspNetCore.Mvc.JsonOptions>().Configure<Lo
     {
         Modifiers = 
         {
-            localizedEntityDataContract.LocalizeAttribute
+            localizedEntityDataContract.LocalizeAttribute,
+            localizedEntityDataContract.ApplyColumnSecurity
         }
     };
 });

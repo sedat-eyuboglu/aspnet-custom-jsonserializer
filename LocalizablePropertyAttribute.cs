@@ -1,4 +1,4 @@
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 public class LocalizablePropertyAttribute : Attribute
 {
     public LocalizablePropertyAttribute()
@@ -9,5 +9,4 @@ public class LocalizablePropertyAttribute : Attribute
     public string KeyPrefix { get; set; }
 
     public string? LocalizationKey { get; set; }
-
 }
