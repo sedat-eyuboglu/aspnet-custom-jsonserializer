@@ -1,7 +1,7 @@
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-public class LocalizablePropertyAttribute : Attribute
+public class LocalizedPropertyAttribute : Attribute
 {
-    public LocalizablePropertyAttribute()
+    public LocalizedPropertyAttribute()
     {
         KeyPrefix = string.Empty;
     }

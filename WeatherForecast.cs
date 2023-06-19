@@ -1,7 +1,4 @@
-using System.Text.Json.Serialization;
-
 namespace aspnet_custom_jsonserializer;
-
 
 public class WeatherForecast
 {
@@ -11,6 +8,7 @@ public class WeatherForecast
 
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     
-    [LocalizableProperty(KeyPrefix = "WeatherForecast_Summary")]
+    [LocalizedProperty(KeyPrefix = "WeatherForecast_Summary")]
+    [SecureProperty("customer", default(int))]
     public string? Summary { get; set; }
 }
